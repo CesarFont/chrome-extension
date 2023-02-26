@@ -9,7 +9,7 @@ renderLeads(myLeads);
 
 inputButton.addEventListener("click", function () {
   let okInput = inputEl.value.trim();
-  if (okInput != "" && !myLeads.includes(okInput)) {
+  if (!myLeads.includes(okInput)) {
     saveUrl(okInput);
   }
 });
@@ -21,7 +21,11 @@ urlButton.addEventListener("click", function () {
       currentWindow: true,
     },
     ([currentTab]) => {
-      alert(currentTab.url);
+      if (!myLeads.includes(currentTab.url)) {
+        myLeads.push(currentTab.url);
+        localStorage.setItem("myLeads", JSON.stringify(myLeads));
+        renderLeads(myLeads);
+      }
     }
   );
 });
@@ -52,6 +56,6 @@ function renderLeads(arr) {
       </li>`;
     }
   }
+  myLeads = arr;
   ul.innerHTML = list;
-  // console.log(myLeads);
 }
