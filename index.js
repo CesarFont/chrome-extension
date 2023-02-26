@@ -10,15 +10,20 @@ renderLeads(myLeads);
 inputButton.addEventListener("click", function () {
   let okInput = inputEl.value.trim();
   if (okInput != "" && !myLeads.includes(okInput)) {
-   saveUrl(okInput);
+    saveUrl(okInput);
   }
 });
 
-urlButton.addEventListener("click", function(){
-  let urlActual = window.location.host;
- if(!myLeads.includes(urlActual)){
-  saveUrl(urlActual);
- }
+urlButton.addEventListener("click", function () {
+  chrome.tabs.query(
+    {
+      active: true,
+      currentWindow: true,
+    },
+    ([currentTab]) => {
+      alert(currentTab.url);
+    }
+  );
 });
 
 function saveUrl(url) {
@@ -39,7 +44,7 @@ function renderLeads(arr) {
     arr = JSON.parse(localStorage.getItem("myLeads"));
   }
   let list = "";
-  if(arr.length > 0){
+  if (arr.length > 0) {
     for (const iterator of arr) {
       list += `
       <li>
